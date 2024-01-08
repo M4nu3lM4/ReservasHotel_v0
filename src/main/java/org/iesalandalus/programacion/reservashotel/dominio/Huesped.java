@@ -1,22 +1,18 @@
 package org.iesalandalus.programacion.reservashotel.dominio;
+
+import java.util.regex.*;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Huesped {
-
-    // Expresiones regulares para validación
-    private static final String NOMBRE_REGEX = "^[A-Za-zÁÉÍÓÚÑáéíóúñ]+(\\s[A-Za-zÁÉÍÓÚÑáéíóúñ]+)*$";
-    private static final String DNI_REGEX = "^\\d{8}[A-HJ-NP-TV-Z]$";
-    private static final String TELEFONO_REGEX = "^\\d{9}$";
-    private static final String CORREO_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
     private String nombre;
     private String dni;
     private String telefono;
     private String correo;
 
-    // Constructor con parámetros
+    private static final String NOMBRE_REGEX = "^[A-Z][a-z]*([ ][A-Z][a-z]*)*$";
+    private static final String DNI_REGEX = "^[0-9]{8}[A-Z]$";
+    private static final String TELEFONO_REGEX = "^[0-9]{9}$";
+    private static final String CORREO_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+
     public Huesped(String nombre, String dni, String telefono, String correo) {
         setNombre(nombre);
         setDni(dni);
@@ -24,21 +20,19 @@ public class Huesped {
         setCorreo(correo);
     }
 
-    // Constructor copia
     public Huesped(Huesped otro) {
         this(otro.nombre, otro.dni, otro.telefono, otro.correo);
     }
 
-    // Métodos de acceso y modificación con validación
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         if (!nombre.matches(NOMBRE_REGEX)) {
-            throw new IllegalArgumentException("Nombre no válido");
+            throw new IllegalArgumentException("Nombre inválido");
         }
-        this.nombre = formateaNombre(nombre);
+        this.nombre = nombre;
     }
 
     public String getDni() {
@@ -47,7 +41,7 @@ public class Huesped {
 
     public void setDni(String dni) {
         if (!dni.matches(DNI_REGEX) || !comprobarLetraDni(dni)) {
-            throw new IllegalArgumentException("DNI no válido");
+            throw new IllegalArgumentException("DNI inválido");
         }
         this.dni = dni;
     }
@@ -58,7 +52,7 @@ public class Huesped {
 
     public void setTelefono(String telefono) {
         if (!telefono.matches(TELEFONO_REGEX)) {
-            throw new IllegalArgumentException("Teléfono no válido");
+            throw new IllegalArgumentException("Teléfono inválido");
         }
         this.telefono = telefono;
     }
@@ -69,47 +63,57 @@ public class Huesped {
 
     public void setCorreo(String correo) {
         if (!correo.matches(CORREO_REGEX)) {
-            throw new IllegalArgumentException("Correo no válido");
+            throw new IllegalArgumentException("Correo inválido");
         }
         this.correo = correo;
     }
 
-    // Método para formatear el nombre
-    private String formateaNombre(String nombre) {
-        // Implementa la lógica para formatear el nombre aquí
-        // Retorna el nombre formateado
-  return nombre;  }
-
-    // Método para comprobar la letra del DNI
-    private boolean comprobarLetraDni(String dni) {
-        // Implementa la lógica para comprobar la letra del DNI aquí
-        // Retorna true si la letra es válida, false en caso contrario
-        System.out.print("Ingrese el número de DNI (sin el dígito verificador): ");
-        int dni = scanner.nextInt();
-
-        int digitoVerificador = calcularDigitoVerificador(dni);
-
-        System.out.println("El dígito verificador es: " + digitoVerificador);
+    public String getIniciales() {
+        String[] palabras = nombre.split(" ");
+        StringBuilder iniciales = new StringBuilder();
+        for (String palabra : palabras) {
+            iniciales.append(palabra.charAt(0));
+        }
+        return iniciales.toString();
     }
 
-    private static int calcularDigitoVerificador(int dni) {
-        int[] coeficientes = {2, 3, 4, 5, 6, 7, 2, 3, 4, 5};
-        int suma = 0;
+    private boolean comprobarLetraDni(String dni) {
+        // Implementación de la comprobación de la letra del DNI
+        // Extraer el número y la letra del DNI
+        String numeroDni = dni.substring(0, 8);
+        char letraDni = dni.charAt(8);
 
-        for (int i = 9; i >= 0; i--) {
-            int digito = dni % 10;
-            dni /= 10;
-            suma += digito * coeficientes[i];
-        }
+        // Calcular la letra correcta
+        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int indiceLetraCorrecta = Integer.parseInt(numeroDni) % 23;
+        char letraCorrecta = letras.charAt(indiceLetraCorrecta);
 
-        int resto = suma % 11;
-        int resultado = 11 - resto;
+        // Comprobar si la letra del DNI es correcta
+        return letraDni == letraCorrecta;
 
-        return (resultado == 11) ? 0 : resultado;
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Huesped huesped = (Huesped) obj;
+        return dni.equals(huesped.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return dni.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Huesped{" +
+                "nombre='" + nombre + '\'' +
+                ", dni='" + dni + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", correo='" + correo + '\'' +
+                '}';
     }
 }
-
-    // Otros métodos requeridos: getIniciales, equals, hashCode, toString
-    // ...
-
-

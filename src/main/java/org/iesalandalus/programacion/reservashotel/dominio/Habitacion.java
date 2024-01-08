@@ -1,54 +1,37 @@
 package org.iesalandalus.programacion.reservashotel.dominio;
 
 
+import java.util.Objects;
+import java.util.Scanner;
 public class Habitacion {
-
-    // Constantes
-    private static final int MAX_PLANTAS = 3;
-    private static final int MAX_HABITACIONES_POR_PLANTA = 15;
-    private static final int PRECIO_MINIMO = 40;
-    private static final int PRECIO_MAXIMO = 150;
-
-    // Atributos
-    private int planta;
-    private int puerta;
+    private String identificador;
     private TipoHabitacion tipo;
-    private int precio;
+    private double precio;
 
-    // Constructor con parámetros
-    public Habitacion(int planta, int puerta, TipoHabitacion tipo, int precio) {
-        setPlanta(planta);
-        setPuerta(puerta);
+    private static final int MAX_PLANTAS = 3;
+    private static final int MAX_PUERTAS = 15;
+    private static final double MIN_PRECIO = 40.0;
+    private static final double MAX_PRECIO = 150.0;
+
+    public Habitacion(String identificador, TipoHabitacion tipo, double precio) {
+        setIdentificador(identificador);
         setTipo(tipo);
         setPrecio(precio);
     }
 
-    // Constructor copia
     public Habitacion(Habitacion otra) {
-        this(otra.planta, otra.puerta, otra.tipo, otra.precio);
+        this(otra.identificador, otra.tipo, otra.precio);
     }
 
-    // Métodos de acceso y modificación con validación
-    public int getPlanta() {
-        return planta;
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public void setPlanta(int planta) {
-        if (planta < 1 || planta > MAX_PLANTAS) {
-            throw new IllegalArgumentException("Número de planta no válido");
+    public void setIdentificador(String identificador) {
+        if (!identificador.matches("^[1-" + MAX_PLANTAS + "][01-" + MAX_PUERTAS + "]$")) {
+            throw new IllegalArgumentException("Identificador inválido");
         }
-        this.planta = planta;
-    }
-
-    public int getPuerta() {
-        return puerta;
-    }
-
-    public void setPuerta(int puerta) {
-        if (puerta < 1 || puerta > MAX_HABITACIONES_POR_PLANTA) {
-            throw new IllegalArgumentException("Número de puerta no válido");
-        }
-        this.puerta = puerta;
+        this.identificador = identificador;
     }
 
     public TipoHabitacion getTipo() {
@@ -59,42 +42,36 @@ public class Habitacion {
         this.tipo = tipo;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
-        if (precio < PRECIO_MINIMO || precio > PRECIO_MAXIMO) {
-            throw new IllegalArgumentException("Precio no válido");
+    public void setPrecio(double precio) {
+        if (precio < MIN_PRECIO || precio > MAX_PRECIO) {
+            throw new IllegalArgumentException("Precio inválido");
         }
         this.precio = precio;
     }
 
-    // Métodos equals y hashCode
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Habitacion habitacion = (Habitacion) obj;
-        return planta == habitacion.planta &&
-                puerta == habitacion.puerta;
+        return identificador.equals(habitacion.identificador);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planta, puerta);
+        return identificador.hashCode();
     }
 
-    // Método toString
     @Override
     public String toString() {
-        return "Habitación " + planta + "-" + puerta +
-                ", Tipo: " + tipo +
-                ", Precio: " + precio + "?";
-    }
-
-    // Puedes probar la clase aquí si lo deseas
-    public static void main(String[] args) {
-        // Código de prueba
+        return "Habitacion{" +
+                "identificador='" + identificador + '\'' +
+                ", tipo=" + tipo +
+                ", precio=" + precio +
+                '}';
     }
 }

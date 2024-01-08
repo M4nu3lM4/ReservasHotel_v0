@@ -6,134 +6,136 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import java.time.format.DateTimeFormatter;
+
+
 public class Consola {
+    private Consola() {
+        // Constructor privado para prevenir la instanciación
+    }
 
-    // Constructor privado, ya que no tiene sentido instanciar objetos de esta clase
-    private Consola() {}
-
-    // Método para mostrar el menú
     public static void mostrarMenu() {
-        System.out.println("Menú:");
         for (Opcion opcion : Opcion.values()) {
             System.out.println(opcion);
         }
     }
 
-    // Método para elegir una opción del menú
     public static Opcion elegirOpcion() {
         Scanner scanner = new Scanner(System.in);
-        int opcionElegida;
-        do {
-            System.out.print("Elige una opción: ");
-            try {
-                opcionElegida = scanner.nextInt();
-                if (opcionElegida >= 0 && opcionElegida < Opcion.values().length) {
-                    return Opcion.values()[opcionElegida];
-                } else {
-                    System.out.println("Opción no válida. Inténtalo de nuevo.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Debes introducir un número.");
-                scanner.nextLine(); // Limpiar el buffer de entrada
-            }
-        } while (true);
+        System.out.println("Elige una opcion:");
+        int opcionElegida = scanner.nextInt();
+        return Opcion.values()[opcionElegida];
     }
 
-    // Método para leer datos de un huésped desde la consola
     public static Huesped leerHuesped() {
+        // Implementación de la lectura de un huésped...
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduce el nombre del huésped: ");
+        System.out.println("Introduce los datos del huésped:");
+
+        System.out.println("Nombre:");
         String nombre = scanner.nextLine();
-        System.out.print("Introduce el DNI del huésped: ");
+
+        System.out.println("DNI:");
         String dni = scanner.nextLine();
-        // Puedes añadir más atributos según las necesidades
-        return new Huesped("NombreFicticio", dni);
+
+        System.out.println("Teléfono:");
+        String telefono = scanner.nextLine();
+
+        System.out.println("Correo:");
+        String correo = scanner.nextLine();
+
+        return new Huesped(nombre, dni, telefono, correo);
     }
 
-    // Método para leer un huésped por DNI
-    public static Huesped leerClientePorDni(String dni) {
-        // Puedes introducir datos ficticios o pedir al usuario los datos necesarios
-        return new Huesped("NombreFicticio", dni);
+    public static Huesped leerClientePorDni() {
+        // Implementación de la lectura de un cliente por DNI...
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce el DNI del huésped:");
+        String dni = scanner.nextLine();
+        // Creamos un huésped con datos ficticios que cumplen las restricciones de creación de un huésped
+        String nombre = "Manuel Martínez Alcalá"; // Nombre ficticio
+        String telefono = "644896133"; // Teléfono ficticio
+        String correo = "manumaral04@gmail.com.com"; // Correo ficticio
+        return new Huesped(nombre, dni, telefono, correo);
     }
 
-    // Método para leer una fecha desde la consola
     public static LocalDate leerFecha() {
         Scanner scanner = new Scanner(System.in);
+        LocalDate fecha = null;
         do {
+            System.out.println("Introduce una fecha (dd/MM/yyyy):");
+            String fechaCadena = scanner.nextLine();
             try {
-                System.out.print("Introduce la fecha (YYYY-MM-DD): ");
-                String fechaStr = scanner.nextLine();
-                return LocalDate.parse(fechaStr);
+                fecha = LocalDate.parse(fechaCadena, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             } catch (Exception e) {
-                System.out.println("Fecha no válida. Inténtalo de nuevo.");
+                System.out.println("Fecha inválida. Inténtalo de nuevo.");
             }
-        } while (true);
+        } while (fecha == null);
+        return fecha;
     }
 
-    // Métodos similares para leer habitaciones, tipo de habitación, régimen, reservas, etc.
-
-    // Puedes agregar métodos similares para leer habitaciones, tipo de habitación, régimen, reservas, etc.
-
-    // Ejemplo de método para leer una habitación desde la consola
     public static Habitacion leerHabitacion() {
+        // Implementación de la lectura de una habitación...
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduce el número de planta: ");
-        int planta = scanner.nextInt();
-        System.out.print("Introduce el número de puerta: ");
-        int puerta = scanner.nextInt();
-        // Puedes añadir más atributos según las necesidades
-        return new Habitacion(planta, puerta, TipoHabitacion.EJEMPLO, 100);
+        System.out.println("Introduce el identificador de la habitación:");
+        String identificador = scanner.nextLine();
+        System.out.println("Elige un tipo de habitación:");
+        TipoHabitacion tipo = leerTipoHabitacion();
+        System.out.println("Introduce el precio de la habitación:");
+        double precio = scanner.nextDouble();
+        return new Habitacion(identificador, tipo, precio);
     }
 
-    // Puedes agregar métodos similares para leer tipo de habitación, régimen, reservas, etc.
+    public static Habitacion leerHabitacionPorIdentificador() {
+        // Implementación de la lectura de una habitación por identificador...
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce el identificador de la habitación:");
+        String identificador = scanner.nextLine();
+        // Crear una habitación con datos ficticios que cumplen las restricciones de creación de una habitación
+        TipoHabitacion tipo = TipoHabitacion.SIMPLE; // Tipo de habitación ficticio
+        double precio = 50.0; // Precio ficticio
+        return new Habitacion(identificador, tipo, precio);
+    }
 
-    // Método para leer un tipo de habitación desde la consola
     public static TipoHabitacion leerTipoHabitacion() {
+        // Implementación de la lectura de un tipo de habitación...
         Scanner scanner = new Scanner(System.in);
         System.out.println("Elige un tipo de habitación:");
         for (TipoHabitacion tipo : TipoHabitacion.values()) {
-            System.out.println(tipo);
+            System.out.println(tipo.ordinal() + " .- " + tipo.getDescripcion());
         }
-        do {
-            try {
-                int opcion = scanner.nextInt();
-                if (opcion >= 0 && opcion < TipoHabitacion.values().length) {
-                    return TipoHabitacion.values()[opcion];
-                } else {
-                    System.out.println("Opción no válida. Inténtalo de nuevo.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Debes introducir un número.");
-                scanner.nextLine(); // Limpiar el buffer de entrada
-            }
-        } while (true);
+        int opcionElegida = scanner.nextInt();
+        return TipoHabitacion.values()[opcionElegida];
     }
 
-    // Método para leer un régimen desde la consola
     public static Regimen leerRegimen() {
+        // Implementación de la lectura de un régimen...
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Elige un tipo de régimen:");
+        System.out.println("Elige un régimen:");
         for (Regimen regimen : Regimen.values()) {
-            System.out.println(regimen);
+            System.out.println(regimen.ordinal() + " .- " + regimen.getDescripcion());
         }
-        do {
-            try {
-                int opcion = scanner.nextInt();
-                if (opcion >= 0 && opcion < Regimen.values().length) {
-                    return Regimen.values()[opcion];
-                } else {
-                    System.out.println("Opción no válida. Inténtalo de nuevo.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Entrada no válida. Debes introducir un número.");
-                scanner.nextLine(); // Limpiar el buffer de entrada
-            }
-        } while (true);
+        int opcionElegida = scanner.nextInt();
+        return Regimen.values()[opcionElegida];
     }
 
-    // Método para leer una reserva desde la consola
     public static Reserva leerReserva() {
-        // Puedes implementar este método de manera similar a los anteriores
-        return new Reserva(); // Reemplaza con la lógica adecuada
+        // Implementación de la lectura de una reserva...
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce los datos de la reserva:");
+
+        System.out.println("Habitación:");
+        Habitacion habitacion = leerHabitacion();
+
+        System.out.println("Fecha de inicio (dd/MM/yyyy):");
+        LocalDate fechaInicio = leerFecha();
+
+        System.out.println("Fecha de fin (dd/MM/yyyy):");
+        LocalDate fechaFin = leerFecha();
+
+        System.out.println("Número de personas:");
+        int numeroPersonas = scanner.nextInt();
+
+        return new Reserva(habitacion, fechaInicio, fechaFin, numeroPersonas);
     }
 }
