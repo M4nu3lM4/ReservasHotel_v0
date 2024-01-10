@@ -8,7 +8,7 @@ public class Reserva {
     private Habitacion habitacion;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private int numeroPersonas;
+    private Huesped numeroPersonas;
     private LocalDateTime checkin;
     private LocalDateTime checkout;
     private double precio;
@@ -16,12 +16,18 @@ public class Reserva {
     private static final int MAX_NUMERO_MESES_RESERVA = 6;
     private static final int MAX_HORAS_POSTERIOR_CHECKOUT = 12;
 
-    public Reserva(Habitacion habitacion, LocalDate fechaInicio, LocalDate fechaFin, int numeroPersonas) {
+    public Reserva(Habitacion habitacion, LocalDate fechaInicio, LocalDate fechaFin, Huesped numeroPersonas) {
         setHabitacion(habitacion);
         setFechaInicio(fechaInicio);
         setFechaFin(fechaFin);
         setNumeroPersonas(numeroPersonas);
         calcularPrecio();
+    }
+
+    public Reserva(Habitacion habitacion, LocalDate fechaInicio, LocalDate fechaFin, int numeroPersonas) {
+    }
+
+    private void setNumeroPersonas(Huesped numeroPersonas) {
     }
 
     private void setFechaInicio(LocalDate fechaInicio) {
