@@ -14,24 +14,29 @@ public class Huespedes {
     }
 
     public ArrayList<Huesped> getHuespedes() {
+        // Devuelve una copia profunda de la colección
         return new ArrayList<>(huespedes);
     }
 
-    public void insertar(Huesped huesped) {
+    public void addHuesped(Huesped huesped) {
+        // Inserta huéspedes no nulos al final de la colección sin admitir repetidos
         if (huesped != null && !huespedes.contains(huesped)) {
             huespedes.add(huesped);
         }
     }
 
     public Huesped buscar(Huesped huesped) {
+        // Devuelve un huésped si éste se encuentra en la colección y null en caso contrario
         int index = huespedes.indexOf(huesped);
         if (index != -1) {
             return huespedes.get(index);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void borrar(Huesped huesped) {
+        // Si el huésped se encuentra en la colección, lo borra
         huespedes.remove(huesped);
     }
 }

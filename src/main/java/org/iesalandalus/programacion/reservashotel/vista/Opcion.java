@@ -1,17 +1,20 @@
 package org.iesalandalus.programacion.reservashotel.vista;
 
 public enum Opcion {
-    OPCION_1("Bienvenido"),
-    OPCION_2("Crear Reserva"),
-    OPCION_3("Buscar reserva"),
-    OPCION_4("Borrar reserva"),
-    OPCION_5("Crear Huesped"),
-    OPCION_6("Buscar Huesped"),
-    OPCION_7("Borrar Huesped"),
-    OPCION_8("Crear Habitacion"),
-    OPCION_9("Buscar habitacion"),
-    OPCION_10("Borrar habitacion"),
-    SALIR("Hasta Luego");
+
+    SALIR("Hasta Luego"),
+    INSERTAR_HUESPED("INSERTAR HUESPED"),
+    BUSCAR_HUESPED("BUSCAR HUESPED 2"),
+    BORRAR_HUESPED("BORRAR HUESPED 3"),
+    MOSTRAR_HUESPED("MOSTRAR HUESPEDES 4"),
+    INSERTAR_HABITACION("INSERTAR HABITACION 5"),
+    BUSCAR_HABITACION("BUSCAR HABITACION 6"),
+    BORRAR_HABITACION("BORRAR HABITACION 7"),
+    MOSTRAR_HABITACIONES("MOSTRAR HABITACIONES 8"),
+    INSERTAR_RESERVA("INSERTAR RESERVA 9"),
+    ANULAR_RESERVA("ANULAR RESERVA 10"),
+    MOSTRAR_RESERVAS("MOSTRAR RESERVAS 11"),
+    CONSULTAR_DISPONIBILIDAD("CONSULTAR DISPONIBILIDAD 12");
 
     // Atributo
     private String mensaje;

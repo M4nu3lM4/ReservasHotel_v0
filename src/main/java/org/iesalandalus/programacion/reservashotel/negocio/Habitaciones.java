@@ -13,24 +13,29 @@ public class Habitaciones {
     }
 
     public ArrayList<Habitacion> getHabitaciones() {
+        // Devuelve una copia profunda de la colección
         return new ArrayList<>(habitaciones);
     }
 
-    public void insertar(Habitacion habitacion) {
+    public void addHabitacion(Habitacion habitacion) {
+        // Inserta habitaciones no nulas al final de la colección sin admitir repetidos
         if (habitacion != null && !habitaciones.contains(habitacion)) {
             habitaciones.add(habitacion);
         }
     }
 
     public Habitacion buscar(Habitacion habitacion) {
+        // Devuelve una habitación si ésta se encuentra en la colección y null en caso contrario
         int index = habitaciones.indexOf(habitacion);
         if (index != -1) {
             return habitaciones.get(index);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void borrar(Habitacion habitacion) {
+        // Si la habitación se encuentra en la colección, la borra
         habitaciones.remove(habitacion);
     }
 }

@@ -1,22 +1,29 @@
 package org.iesalandalus.programacion.reservashotel.dominio;
 
 public enum Regimen {
-    SOLO_ALOJAMIENTO("Solo alojamiento, incremento por persona: 0?"),
-    MEDIA_PENSION("Media pensión, incremento por persona: 20?"),
-    PENSION_COMPLETA("Pensión completa, incremento por persona: 40?");
+    MP("Media pensión", 40),
+    PC("Pensión completa", 70),
+    AD("Alojamiento y desayuno", 30),
+    SA("Solo Alojamiento", 20);
+    private String descripcion;
+    private double incrementoPrecio;
 
-    private final String descripcion;
-
-    Regimen(String descripcion) {
+    Regimen(String descripcion, double incrementoPrecio) {
         this.descripcion = descripcion;
+        this.incrementoPrecio = incrementoPrecio;
     }
 
     public String getDescripcion() {
         return descripcion;
     }
 
+    public double getIncrementoPrecio() {
+        return incrementoPrecio;
+    }
+
     @Override
     public String toString() {
-        return descripcion;
+        return descripcion + " (" + incrementoPrecio + "€ por persona)";
     }
 }
+

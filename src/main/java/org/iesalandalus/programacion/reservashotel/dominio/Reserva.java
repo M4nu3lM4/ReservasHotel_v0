@@ -27,6 +27,9 @@ public class Reserva {
     public Reserva(Habitacion habitacion, LocalDate fechaInicio, LocalDate fechaFin, int numeroPersonas) {
     }
 
+    public Reserva(String codigo, LocalDate fechaInicio, LocalDate fechaFin, Huesped huesped, Habitacion habitacion, Regimen regimen) {
+    }
+
     private void setNumeroPersonas(Huesped numeroPersonas) {
     }
 
@@ -34,11 +37,11 @@ public class Reserva {
     }
 
     private void setFechaFin(LocalDate fechaFin) {
-        
+
     }
 
     private void setNumeroPersonas(int numeroPersonas) {
-        
+
     }
 
     private void setHabitacion(Habitacion habitacion) {
@@ -49,6 +52,14 @@ public class Reserva {
     }
 
     // Métodos de acceso y modificación...
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+
+    public Habitacion getHabitacion() {
+        return habitacion;
+    }
 
     private void calcularPrecio() {
         // Implementación del cálculo del precio...
@@ -80,18 +91,11 @@ public class Reserva {
                 '}';
     }
 
-    public Object getHabitacion() {
-        return null;
-    }
-
     public Object getHuesped() {
         return null;
     }
 
     public Instant getFechaInicio() {
-        return null;
-    }
-    public Instant getTipo(){
         return null;
     }
 }

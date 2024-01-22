@@ -11,49 +11,65 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Reservas {
-    private ArrayList<Reserva> reservas;
 
-    public Reservas() {
-        this.reservas = new ArrayList<>();
-    }
+        private ArrayList<Reserva> reservas;
 
-    public ArrayList<Reserva> getReservas() {
-        return new ArrayList<>(reservas);
-    }
-
-    public void insertar(Reserva reserva) {
-        if (reserva != null && !reservas.contains(reserva)) {
-            reservas.add(reserva);
+        public Reservas() {
+            this.reservas = new ArrayList<>();
         }
-    }
 
-    public Reserva buscar(Reserva reserva) {
-        int index = reservas.indexOf(reserva);
-        if (index != -1) {
-            return reservas.get(index);
+        public ArrayList<Reserva> getReservas() {
+            // Devuelve una copia profunda de la colección
+            return new ArrayList<>(reservas);
         }
-        return null;
+
+        public void addReserva(Reserva reserva) {
+            // Inserta reservas no nulas al final de la colección sin admitir repetidos
+            if (reserva != null && !reservas.contains(reserva)) {
+                reservas.add(reserva);
+            }
+        }
+
+        public Reserva buscar(Reserva reserva) {
+            // Devuelve una reserva si ésta se encuentra en la colección y null en caso contrario
+            int index = reservas.indexOf(reserva);
+            if (index != -1) {
+                return reservas.get(index);
+            } else {
+                return null;
+            }
+        }
+
+        public void borrar(Reserva reserva) {
+            // Si la reserva se encuentra en la colección, la borra
+            reservas.remove(reserva);
+        }
+
+        public ArrayList<Reserva> getReservas(Huesped huesped) {
+            // Devuelve una colección de las reservas realizadas por el huésped pasado por parámetro
+            return reservas.stream()
+                    .filter(reserva -> reserva.getHuesped().equals(huesped))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        public ArrayList<Reserva> getReservas(TipoHabitacion tipo) {
+            // Devuelve una colección de las reservas realizadas para el tipo de habitación indicada como parámetro
+            return reservas.stream()
+                    .filter(reserva -> reserva.getHabitacion().getTipo().equals(tipo))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        public ArrayList<Reserva> getReservasFuturas(Habitacion habitacion) {
+            // Devuelve una colección de las reservas realizadas para la habitación indicada como parámetro y que sean posteriores a la fecha de hoy
+            return reservas.stream()
+                    .filter(reserva -> reserva.getHabitacion().equals(habitacion) && reserva.getFechaInicio().isAfter(Instant.from(LocalDate.now())))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+    public void anularReserva(Huesped huespedParaAnular) {
     }
 
-    public void borrar(Reserva reserva) {
-        reservas.remove(reserva);
-    }
-
-    public ArrayList<Reserva> getReservas(Huesped huesped) {
-        return reservas.stream()
-                .filter(reserva -> reserva.getHuesped().equals(huesped))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public ArrayList<Reserva> getReservas(TipoHabitacion tipo) {
-        return reservas.stream()
-                .filter(reserva -> reserva.getHabitacion().getClass().equals(tipo))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public ArrayList<Reserva> getReservasFuturas(Habitacion habitacion) {
-        return reservas.stream()
-                .filter(reserva -> reserva.getHabitacion().equals(habitacion) && reserva.getFechaInicio().isAfter(Instant.from(LocalDate.now())))
-                .collect(Collectors.toCollection(ArrayList::new));
+    public Habitacion consultarDisponibilidad(TipoHabitacion tipo, LocalDate inicio, LocalDate fin) {
+            return null;
     }
 }

@@ -2,25 +2,32 @@ package org.iesalandalus.programacion.reservashotel.dominio;
 
 
 import java.util.Objects;
-import java.util.Scanner;
-public class Habitacion {
-    private String identificador;
-    private TipoHabitacion tipo;
-    private double precio;
 
+public class Habitacion {
     private static final int MAX_PLANTAS = 3;
     private static final int MAX_PUERTAS = 15;
     private static final double MIN_PRECIO = 40.0;
     private static final double MAX_PRECIO = 150.0;
 
-    public Habitacion(String identificador, TipoHabitacion tipo, double precio) {
+    private String identificador;
+    private TipoHabitacion tipo;
+    private double precio;
+    private int capacidad;
+
+    public Habitacion(String identificador) {
         setIdentificador(identificador);
         setTipo(tipo);
         setPrecio(precio);
     }
 
     public Habitacion(Habitacion otra) {
-        this(otra.identificador, otra.tipo, otra.precio);
+        this(otra.identificador);
+    }
+
+    public Habitacion(int numeroPlanta, int numeroPuerta) {
+    }
+
+    public Habitacion(int numeroPlanta, int numeroPuerta, String tipoFicticio, int i, boolean b) {
     }
 
     public String getIdentificador() {
@@ -28,7 +35,15 @@ public class Habitacion {
     }
 
     public void setIdentificador(String identificador) {
-        if (!identificador.matches("^[1-" + MAX_PLANTAS + "][01-" + MAX_PUERTAS + "]$")) {
+        // Comprueba que el identificador es válido
+        // Lanza una excepción si no lo es
+        String[] partes = identificador.split("-");
+        if (partes.length != 2) {
+            throw new IllegalArgumentException("Identificador inválido");
+        }
+        int planta = Integer.parseInt(partes[0]);
+        int puerta = Integer.parseInt(partes[1]);
+        if (planta < 1 || planta > MAX_PLANTAS || puerta < 1 || puerta > MAX_PUERTAS) {
             throw new IllegalArgumentException("Identificador inválido");
         }
         this.identificador = identificador;
@@ -57,13 +72,13 @@ public class Habitacion {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Habitacion habitacion = (Habitacion) obj;
-        return identificador.equals(habitacion.identificador);
+        Habitacion that = (Habitacion) obj;
+        return identificador.equals(that.identificador);
     }
 
     @Override
     public int hashCode() {
-        return identificador.hashCode();
+        return Objects.hash(identificador);
     }
 
     @Override
@@ -73,5 +88,13 @@ public class Habitacion {
                 ", tipo=" + tipo +
                 ", precio=" + precio +
                 '}';
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
     }
 }
